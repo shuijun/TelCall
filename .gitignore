@@ -12,6 +12,6 @@
 hs_err_pid*
 
 
-src/bin
-src/gen
+**/bin
+**/gen
 *.apk
