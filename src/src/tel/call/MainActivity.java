@@ -23,10 +23,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.CallLog.Calls;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -63,6 +65,9 @@ public class MainActivity extends ActionBarActivity {
 	private AlertDialog.Builder dialog_exit;
 
 	private SharedPreferences preferences;
+
+	private static final String[] porjection = new String[] { Calls.TYPE,
+			Calls.NUMBER, Calls.DATE, Calls.DURATION };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -137,10 +142,9 @@ public class MainActivity extends ActionBarActivity {
 					showAlertDialog(_jo.getJSONArray("msg").getString(0));
 					return;
 				}
+
 				// TODO
-				if (null == preferences)
-					preferences = getSharedPreferences(AppUtil.UN_UPLOAD,
-							MODE_PRIVATE);
+				preferences = getSharedPreferences();
 
 				// TODO
 				Editor _editor = preferences.edit();
@@ -333,14 +337,19 @@ public class MainActivity extends ActionBarActivity {
 		list_grid.setEnabled(status);
 	}
 
+	private SharedPreferences getSharedPreferences() {
+		if (null == preferences)
+			preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
+		return preferences;
+	}
+
 	/**
 	 * 检测未上传数据，无未上传记录则返回true
 	 * 
 	 * @return
 	 */
 	private boolean checkUnUploadData() {
-		if (null == preferences)
-			preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
+		preferences = getSharedPreferences();
 
 		// TODO
 		String id = preferences.getString("id", null);
@@ -351,8 +360,49 @@ public class MainActivity extends ActionBarActivity {
 		long talk_time = preferences.getLong("TALK_TIME", 0);
 		String tel_num = preferences.getString("TEL_NUM", "");
 
-		uploadData(id, tel_num, talk_time, talk_time_len);
+		// TODO
+		Object[] os = findLast(id, tel_num, talk_time, talk_time_len);
+		if (null == os)
+			return true;
+
+		uploadData(id, tel_num, (Long) os[0], (Integer) os[1]);
 		return false;
+	}
+
+	private Object[] findLast(String id, String tel_num, long talk_time,
+			int talk_time_len) {
+		Cursor _cursor = null;
+		// TODO
+		try {
+			_cursor = getContentResolver().query(
+					Calls.CONTENT_URI,
+					porjection,
+					Calls.TYPE + "=" + Calls.OUTGOING_TYPE + " AND "
+							+ Calls.NUMBER + "=? AND " + Calls.DATE + ">"
+							+ (talk_time - 60 * 60 * 1000) + " AND "
+							+ talk_time_len + "<" + Calls.DURATION,
+					new String[] { tel_num }, "DATE DESC LIMIT 1");
+			// TODO
+			if (_cursor.moveToFirst()) {
+				Log.i(TAG,
+						"===========" + _cursor.getString(0) + ","
+								+ _cursor.getString(1) + ","
+								+ _cursor.getString(2) + ","
+								+ _cursor.getString(3));
+
+				Object[] os = new Object[] { _cursor.getLong(2),
+						_cursor.getInt(3) };
+				return os;
+			} else {
+				Log.i(TAG, "===========");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		} finally {
+			if (null != _cursor)
+				_cursor.close();
+		}
+		return null;
 	}
 
 	/**

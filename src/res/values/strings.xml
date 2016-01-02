@@ -2,12 +2,10 @@
 <resources>
 
     <string name="app_name">打电话</string>
-    <!--
     <string name="httpUrl">http://192.168.6.1:3011/</string>
     <string name="AppUrl">http://192.168.6.1:3011/</string>
-    -->
-    <string name="httpUrl">http://112.74.17.7:3018/</string>
-    <string name="AppUrl">http://112.74.17.7/app/ggzxb.apk</string>
+    <!-- <string name="httpUrl">http://112.74.17.7:3018/</string>
+    <string name="AppUrl">http://112.74.17.7/app/ggzxb.apk</string> -->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
     <string name="action_taskHistory">任务历史</string>

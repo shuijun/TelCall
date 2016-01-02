@@ -8,17 +8,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tel.call.action.ServiceAction;
+import tel.call.util.AppUtil;
 import tel.call.util.DateUtil;
 import tel.call.util.HttpUtil;
 import tel.call.util.HttpUtil.RequestMethod;
 import tel.call.util.RestUtil;
 import tel.call.util.UserInfo;
-import tel.call.util.UserInfo.CallInfo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +52,7 @@ public class DialActivity extends Activity {
 	private UserInfo userInfo;
 
 	private AlertDialog.Builder dialog_alert;
+	private SharedPreferences preferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,12 @@ public class DialActivity extends Activity {
 		applyTask(_bundle.getString("TASK_ID"));
 	}
 
+	private SharedPreferences getSharedPreferences() {
+		if (null == preferences)
+			preferences = getSharedPreferences(AppUtil.UN_UPLOAD, MODE_PRIVATE);
+		return preferences;
+	}
+
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
 
@@ -88,12 +97,17 @@ public class DialActivity extends Activity {
 			}
 		}
 
+		@SuppressLint("CommitPrefEdits")
 		private void applyTask(Message msg) {
 			// TODO
 			if (null == msg.obj) {
 				showAlertDialog(getString(msg.arg1));
 				return;
 			}
+
+			// TODO
+			preferences = getSharedPreferences();
+			Editor _editor = preferences.edit();
 
 			// TODO
 			try {
@@ -120,16 +134,17 @@ public class DialActivity extends Activity {
 				text_sms_intro.setText(_jdata.getString("SMS_INTRO"));
 
 				// TODO
-				CallInfo _ci = userInfo.new CallInfo();
-				_ci.setHandtask_id(_jdata.getString("HANDTASK_ID"));
-				_ci.setTel_num(_jdata.getString("TEL_NUM"));
-				_ci.setTalk_time_len(_jdata.getInt("TALK_TIME_LEN"));
-				userInfo.setCallInfo(_ci);
+				_editor.putString("id", _jdata.getString("HANDTASK_ID"));
+				_editor.putInt("TALK_TIME_LEN", _jdata.getInt("TALK_TIME_LEN"));
+				_editor.putString("TEL_NUM", _jdata.getString("TEL_NUM"));
+				_editor.commit();
 				// TODO
 				btn_dial.setEnabled(true);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				userInfo.setCallInfo(null);
+				// TODO
+				_editor.remove("id");
+				_editor.commit();
 				showAlertDialog(e.getMessage());
 			}
 		}
@@ -197,12 +212,17 @@ public class DialActivity extends Activity {
 		btn_dial.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				// TODO
+				preferences = getSharedPreferences();
+				Editor _editor = preferences.edit();
+				_editor.putLong("TALK_TIME", (new Date()).getTime());
+				_editor.commit();
+				// TODO
 				Bundle _bundle = getIntent().getExtras();
 				// 用intent启动拨打电话
 				Intent _intent = new Intent(Intent.ACTION_CALL, Uri
 						.parse("tel:" + _bundle.getString("TEL_NUM")));
 				DialActivity.this.startActivity(_intent);
-				DialActivity.this.finish();
 			}
 		});
 
@@ -218,6 +238,7 @@ public class DialActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && 0 == event.getRepeatCount()) {
+			// TODO
 			finish();
 			return true;
 		}
