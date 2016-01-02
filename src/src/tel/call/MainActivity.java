@@ -374,6 +374,7 @@ public class MainActivity extends ActionBarActivity {
 		Cursor _cursor = null;
 		// TODO
 		try {
+			
 			_cursor = getContentResolver().query(
 					Calls.CONTENT_URI,
 					porjection,
