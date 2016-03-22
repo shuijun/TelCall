@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".DialActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/text_task_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:layout_marginTop="15dip"
+            android:enabled="false"
+            android:hint="任务名称"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textColor="#ff8c00" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/text_tel_num"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:layout_marginTop="15dip"
+            android:enabled="false"
+            android:hint="@string/dial_main_placeholder_tel"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textColor="#ff8c00" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/text_talk_timeout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:layout_marginTop="15dip"
+            android:enabled="false"
+            android:hint="任务过期"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textColor="#ff8c00" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/text_talk_time_len"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:layout_marginTop="15dip"
+            android:enabled="false"
+            android:hint="通话时长"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textColor="#ff8c00" >
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/text_sms_intro"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="短信信息"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="true"
+                android:textColor="#ff8c00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/text_task_intro"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="@string/dial_main_placeholder_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="true"
+                android:textColor="#ff8c00" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_dial"
+            style="@drawable/btn_dial"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:background="@drawable/btn_dial"
+            android:enabled="false"
+            android:text="@string/dial_main_btn_dial"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#000000" />
+
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/btn_upload"
+            android:enabled="false"
+            android:text="提交任务"
+            android:textColor="#ffffff"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+</ScrollView>

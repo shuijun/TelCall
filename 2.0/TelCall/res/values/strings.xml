@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">增效宝</string>
+    <!--  <string name="httpUrl">http://192.168.6.1:3011/</string>
+    <string name="AppUrl">http://192.168.6.1:3011/</string> -->
+    <string name="httpUrl">http://dolalive.com/rvt/api/</string>
+    <string name="AppUrl">http://112.74.17.7/app/ggzxb.apk</string>
+   <string name="UserUrl"> "http://112.74.17.7/rvt/i/"</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">设置</string>
+    <string name="action_taskHistory">任务历史</string>
+    <string name="action_changePwd">修改密码</string>
+    <string name="splash_desc">splash</string>
+    <!--  -->
+    <string name="login_main_label_username">用户名</string>
+    <string name="login_main_label_userpass">密码</string>
+    <string name="login_main_btn_login">登录</string>
+     <string name="login_main_btn_reg">注册</string>
+    <string name="login_main_btn_login_ing">正在登录</string>
+    <string name="login_main_btn_show">显示密码</string>
+    <string name="login_main_btn_hide">隐藏密码</string>
+    <string name="login_main_placeholder_userpass">请输入密码</string>
+    <string name="login_main_placeholder_username">请输入手机号/邮箱/用户名</string>
+    <string name="login_main_label_1">还没有帐号?</string>
+    <string name="login_main_label_2"><u>注册</u></string>   
+    <!--  -->
+    <string name="valiate_username">用户名不能为空,请重新输入</string>
+    <string name="valiate_userpass">密码不能为空,请重新输入</string>
+    <string name="valiate_form">表单参数异常</string>
+    <string name="valiate_login">用户名或密码输入错误</string>
+    <string name="valiate_network">有可能网络异常啦</string>
+    <!--  -->
+    <string name="dial_main_btn_dial">立即拨打</string>
+    <string name="dial_main_placeholder_tel">电话号码</string>
+    <string name="dial_main_placeholder_hint">提示信息</string>
+    <!--  -->
+    <string name="fragment_main_btn_grab">抢一单</string>
+    <string name="fragment_main_btn_sync">刷新</string>
+    <string name="fragment_main_tab_cell_1">No.</string>
+    <string name="fragment_main_tab_cell_2">任务名称</string>
+    <string name="fragment_main_tab_cell_3">总/完成</string>
+    <string name="fragment_main_tab_cell_4">操作</string>
+
+</resources>
