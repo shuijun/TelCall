@@ -130,9 +130,9 @@ public class MainActivity extends ActionBarActivity {
 			case ServiceAction.COMMIT_TASK:
 				commitTask(msg);
 				break;
-				
-			case  ServiceAction.UPLOAD_DATA:  //接收线程查找消息
-				uploadData( msg) ;				
+
+			case ServiceAction.UPLOAD_DATA: // 接收线程查找消息
+				uploadData(msg);
 				break;
 
 			// case ServiceAction.APPLY_TASK:
@@ -225,6 +225,7 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 
+		// 判断是否拨打（已经申请，但是没有点击立即拨打）
 		if (!preferences.getBoolean("TASK_STATUS", false)) {
 			btn_get.setEnabled(true);
 			return true;
@@ -234,7 +235,8 @@ public class MainActivity extends ActionBarActivity {
 		final long talk_time = preferences.getLong("START_TIME", 0);
 		final String tel_num = preferences.getString("TEL_NUM", "");
 
-		proDialog = android.app.ProgressDialog.show(MainActivity.this, "","正在查询,请稍等......");
+		proDialog = android.app.ProgressDialog.show(MainActivity.this, "",
+				"正在查询,请稍等......");
 
 		Thread thread = new Thread() {
 			public void run() {
@@ -244,22 +246,23 @@ public class MainActivity extends ActionBarActivity {
 						os = findLast(id, tel_num, talk_time, talk_time_len);
 						Thread.sleep(1000);
 
-						if (null != os)
-						{
-							i = 5;
-							
+						if (null != os) {
 							Message msg = new Message();
 							msg.what = ServiceAction.UPLOAD_DATA;
-							
-							Bundle bundle = new Bundle();							
-							
-							bundle.putString("id",id);						
-							bundle.putString("telnum",tel_num);
-							bundle.putLong("date", Long.parseLong( os[0].toString()));							
-							bundle.putInt("timelen", 	Integer.parseInt( os[1].toString()));
+
+							Bundle bundle = new Bundle();
+
+							bundle.putString("id", id);
+							bundle.putString("telnum", tel_num);
+							bundle.putLong("date",
+									Long.parseLong(os[0].toString()));
+							bundle.putInt("timelen",
+									Integer.parseInt(os[1].toString()));
 
 							msg.setData(bundle);
 							handler.sendMessage(msg);
+
+							break;
 						}
 					}
 				} catch (Exception e) {
@@ -273,20 +276,20 @@ public class MainActivity extends ActionBarActivity {
 
 		// os = findLast(id, tel_num, talk_time, talk_time_len);
 
-		if (null == os) {
-			btn_get.setEnabled(true);
-			return true;
-		}
+		// if (null == os) {
+		// btn_get.setEnabled(true);
+		// return true;
+		// }
 
-		//uploadData(id, tel_num, (Long) os[0], (Integer) os[1]);
-		//btn_get.setEnabled(true);
+		// uploadData(id, tel_num, (Long) os[0], (Integer) os[1]);
+		// btn_get.setEnabled(true);
 
 		return false;
 	}
 
 	// 取得最后一次的通话记录
-	private Object[] findLast(String id, String tel_num, long talk_time,	int talk_time_len) 
-	{
+	private Object[] findLast(String id, String tel_num, long talk_time,
+			int talk_time_len) {
 		Cursor _cursor = null;
 
 		try {
@@ -302,17 +305,19 @@ public class MainActivity extends ActionBarActivity {
 					// //不检测通话时长，防止卡未满足时长的任务
 					, new String[] { tel_num }, "DATE DESC LIMIT 1");
 
-			if (_cursor.moveToFirst()) 
-			{
-				Log.d(TAG,						"/////////////////============" + _cursor.getString(0)
+			if (_cursor.moveToFirst()) {
+				Log.d(TAG,
+						"/////////////////============" + _cursor.getString(0)
 								+ "," + _cursor.getString(1) + ","
 								+ _cursor.getString(2) + ","
 								+ _cursor.getString(3)
 								+ "==============//////////////");
 
-				Object[] os = new Object[] { _cursor.getLong(2),	_cursor.getInt(3) };
-				//Object[] os = new Object[] { id,tel_num ,_cursor.getLong(2),	_cursor.getInt(3) };
-				
+				Object[] os = new Object[] { _cursor.getLong(2),
+						_cursor.getInt(3) };
+				// Object[] os = new Object[] { id,tel_num ,_cursor.getLong(2),
+				// _cursor.getInt(3) };
+
 				return os;
 			} else {
 				Log.i(TAG, "===========");
@@ -327,20 +332,20 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	// 上传数据
-//	private void uploadData(String id, String tel_num, long talk_time,	int talk_time_len) 
-	private void uploadData(Message msg) 
-	{
-			Log.d(TAG,	 "--------------UPLOADDATA----------");
-				
-			String id="";
-			String tel_num="";
-			long talk_time=0;
-			int talk_time_len=0;
-			
-			id = msg.getData().getString("id");
-			tel_num = msg.getData().getString("telnum");
-			talk_time = msg.getData().getLong("date");
-			talk_time_len = msg.getData().getInt("timelen");		
+	// private void uploadData(String id, String tel_num, long talk_time, int
+	// talk_time_len)
+	private void uploadData(Message msg) {
+		Log.d(TAG, "--------------UPLOADDATA----------");
+
+		String id = "";
+		String tel_num = "";
+		long talk_time = 0;
+		int talk_time_len = 0;
+
+		id = msg.getData().getString("id");
+		tel_num = msg.getData().getString("telnum");
+		talk_time = msg.getData().getLong("date");
+		talk_time_len = msg.getData().getInt("timelen");
 
 		if (null == userInfo)
 			userInfo = (UserInfo) getApplication();
@@ -361,7 +366,8 @@ public class MainActivity extends ActionBarActivity {
 			jo.put("TALK_TIME_LEN", talk_time_len);
 			jo.put("TALK_TIME", talk_time);
 
-			TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+			TelephonyManager tm = (TelephonyManager) this
+					.getSystemService(Context.TELEPHONY_SERVICE);
 			jo.put("DEVICE_CODE", tm.getDeviceId());
 
 			_jo.put("data", jo.toString());
@@ -372,15 +378,17 @@ public class MainActivity extends ActionBarActivity {
 			String _paramStr = URLEncoder.encode(
 					"apikey=" + userInfo.getApikey()
 							+ "&command=commitTask&ts=" + _ts, "UTF-8");
-			_jo.put("signature",RestUtil.standard(_paramStr, userInfo.getSeckey()));
+			_jo.put("signature",
+					RestUtil.standard(_paramStr, userInfo.getSeckey()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		 
+
 		Log.d(TAG, "-----UpLoad Task-----");
 
-		HttpUtil _hu = new HttpUtil(ServiceAction.COMMIT_TASK, handler,	getString(R.string.httpUrl), RequestMethod.POST, _jo);
+		HttpUtil _hu = new HttpUtil(ServiceAction.COMMIT_TASK, handler,
+				getString(R.string.httpUrl), RequestMethod.POST, _jo);
 		Thread _t = new Thread(_hu);
 		_t.start();
 
